@@ -1,6 +1,7 @@
 var trex, trex_running, trex_collided;
 var ground, invisibleGround, groundImage;
-
+var nuvem;
+var nuvemimg;
 
 
 
@@ -11,7 +12,7 @@ function preload(){
   trex_running = loadAnimation("assets/trex1.png","assets/trex2.png","assets/trex3.png");
   trex_collided = loadImage("assets/trex_collided.png");
   groundImage = loadImage("assets/ground2.png");
-  
+  nuvemimg = loadImage("assets/cloud.png");
  
   
 }
@@ -41,7 +42,7 @@ function setup() {
 
 function draw() {
   //definir cor do plano de fundo
-  background(220);
+  background("white");
   
   
   
@@ -67,5 +68,10 @@ function draw() {
 
 
 function gerarNuvens(){
-  
+  if(frameCount % 60 === 0){
+    nuvem = createSprite(600,100,40,10);
+    nuvem.velocityX = -3;
+    nuvem.y = Math.round(random(10, 60));
+   nuvem.addImage(nuvemimg);
+}  
 }
