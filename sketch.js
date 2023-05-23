@@ -1,3 +1,4 @@
+//Criando variaveis
 var trex, trex_running, trex_collided;
 var ground, invisibleGround, groundImage;
 var nuvem;
@@ -7,10 +8,13 @@ var cactosG, nuvensG;
 var PLAY = 1;
 var END = 0;
 var gameState = PLAY;
+var score;
 
 
 
 function preload(){
+
+  //Carregando arquivos
   trex_running = loadAnimation("assets/trex1.png","assets/trex2.png","assets/trex3.png");
   trex_collided = loadImage("assets/trex_collided.png");
   groundImage = loadImage("assets/ground2.png");
@@ -47,14 +51,19 @@ function setup() {
   //criar grupos (cactos e nuvens)
   cactosG = new Group();
   nuvensG = new Group();
- 
-  console.log("Olá " + "Samantha");
+
+  trex.setCollider("circle", 0,0, 40);
+  trex.debug = true;
+
+  score = 0;
  
 }
 
 function draw() {
   //definir cor do plano de fundo
   background("white");
+  text("Pontuação: " + score, 500, 50);
+  score = score + Math.round(frameCount/200);
   
   if(gameState === PLAY){
 
@@ -71,13 +80,22 @@ function draw() {
       gerarNuvens();
       gerarCactos();
 
+     if(trex.collide(cactosG)){
+      gameState = END;
+  }
+
   }else if(gameState === END){
+    //Parando a velocidade dos objetos do jogo.
+    ground.velocityX = 0;
+    cactosG.setVelocityXEach(0);
+    nuvensG.setVelocityXEach(0);
 
 
   }
 
   //Adicionando um efeito de gravidade
   trex.velocityY = trex.velocityY + 0.8;
+
   //impedir que o trex caia
   trex.collide(invisibleGround);
   drawSprites();
@@ -97,6 +115,7 @@ function gerarNuvens(){
 
     nuvem.lifetime = 210;
     nuvensG.add(nuvem);
+
 }
 }
 function gerarCactos() {
